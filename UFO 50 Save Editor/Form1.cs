@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -16,6 +16,17 @@ namespace UFO_50_Save_Editor
         private void Form1_Load(object sender, EventArgs e)
         {
             dataGridView1.AutoGenerateColumns = false;
+
+            DataGridViewButtonColumn deleteColumn = new DataGridViewButtonColumn();
+            deleteColumn.Name = "DeleteCol";
+            deleteColumn.HeaderText = "";
+            deleteColumn.Text = "✕";
+            deleteColumn.UseColumnTextForButtonValue = true;
+            deleteColumn.Width = 50;
+            deleteColumn.DisplayIndex = 0;
+            dataGridView1.Columns.Add(deleteColumn);
+            dataGridView1.CellClick += DataGridView1_CellClick;
+
             VariableCol.Name = "VariableCol";
             ValueCol.Name = "ValueCol";
 
@@ -25,6 +36,15 @@ namespace UFO_50_Save_Editor
             }
             else {
                 ReadSaveFile(saveFilePath);
+            }
+        }
+
+        private void DataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex >= 0 && e.RowIndex >= 0 && dataGridView1.Columns[e.ColumnIndex] is DataGridViewButtonColumn) {
+                if (MessageBox.Show(this, "Delete Variable?", "Confirm Delete", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes) {
+                    dataGridView1.Rows.RemoveAt(e.RowIndex);
+                }
             }
         }
 
@@ -58,6 +78,55 @@ namespace UFO_50_Save_Editor
                 File.WriteAllText(saveFilePath, encodedText);
                 MessageBox.Show("UFO 50 save file overwritten. Backup created in 'BACKUPS' folder.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+        private void BtnAdd_Click(object sender, EventArgs e)
+        {
+            using (Form prompt = new Form()) {
+                prompt.Width = 400;
+                prompt.Height = 120;
+                prompt.Text = "New Variable Name";
+                prompt.FormBorderStyle = FormBorderStyle.FixedDialog;
+                prompt.StartPosition = FormStartPosition.CenterParent;
+
+                TextBox inputBox = new TextBox() { Left = 20, Top = 20, Width = 250 };
+                Button confirmButton = new Button() { Text = "OK", Left = 290, Top = 19, Width = 70, Height = 32, DialogResult = DialogResult.OK };
+
+                prompt.Controls.Add(inputBox);
+                prompt.Controls.Add(confirmButton);
+                prompt.AcceptButton = confirmButton;
+
+                if (prompt.ShowDialog() == DialogResult.OK && !string.IsNullOrWhiteSpace(inputBox.Text)) {
+                    string newVariable = inputBox.Text.Trim();
+
+                    foreach (DataGridViewRow row in dataGridView1.Rows) {
+                        if (row.Cells["VariableCol"].Value?.ToString().Equals(newVariable, StringComparison.OrdinalIgnoreCase) == true) {
+                            MessageBox.Show("A variable with this name already exists.", "Duplicate Variable", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                    }
+
+                    dataGridView1.Rows.Add(inputBox.Text, "");
+                    dataGridView1.CurrentCell = dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[1];
+                    dataGridView1.BeginEdit(true);
+                }
+            }
+        }
+        private void BtnGift_Click(object sender, EventArgs e)
+        {
+            for (int i = 1; i <= 50; i++) {
+                bool skip = false;
+                string giftVariable = "game0_gardenWin" + i;
+                foreach (DataGridViewRow row in dataGridView1.Rows) {
+                    if (row.Cells["VariableCol"].Value?.ToString().Equals(giftVariable, StringComparison.OrdinalIgnoreCase) == true) {
+                        skip = true;
+                        break;
+                    }
+                }
+                if (!skip) {
+                    dataGridView1.Rows.Add(giftVariable, "1.0");
+                }
+            }
+            dataGridView1.CurrentCell = dataGridView1.Rows[dataGridView1.Rows.Count - 1].Cells[1];
         }
         private int lastMatchedIndex = -1;
         private void filterTextBox_KeyDown(object sender, KeyEventArgs e)
