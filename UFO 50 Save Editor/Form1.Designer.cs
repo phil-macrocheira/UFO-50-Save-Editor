@@ -75,17 +75,6 @@
             BtnAdd.UseVisualStyleBackColor = true;
             BtnAdd.Click += BtnAdd_Click;
             // 
-            // BtnGift
-            // 
-            BtnGift.Location = new Point(853, 17);
-            BtnGift.Margin = new Padding(2);
-            BtnGift.Name = "BtnGift";
-            BtnGift.Size = new Size(143, 37);
-            BtnGift.TabIndex = 8;
-            BtnGift.Text = "Collect All Gifts";
-            BtnGift.UseVisualStyleBackColor = true;
-            BtnGift.Click += BtnGift_Click;
-            // 
             // VariableHeader
             // 
             VariableHeader.Text = "Variable";
@@ -161,6 +150,17 @@
             label1.TabIndex = 6;
             label1.Text = "No save file currently open";
             label1.Click += label1_Click;
+            // 
+            // BtnGift
+            // 
+            BtnGift.Location = new Point(853, 17);
+            BtnGift.Margin = new Padding(2);
+            BtnGift.Name = "BtnGift";
+            BtnGift.Size = new Size(143, 37);
+            BtnGift.TabIndex = 8;
+            BtnGift.Text = "Collect All Gifts";
+            BtnGift.UseVisualStyleBackColor = true;
+            BtnGift.Click += BtnGift_Click;
             // 
             // Form1
             // 

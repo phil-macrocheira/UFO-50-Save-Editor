@@ -9,6 +9,19 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
     <PlatformTarget>x64</PlatformTarget>
+    <ApplicationIcon>sSaveIcon_0.ico</ApplicationIcon>
+    <PackageIcon>sSaveIcon_0.png</PackageIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="sSaveIcon_0.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\..\..\Desktop\sSaveIcon_0.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
