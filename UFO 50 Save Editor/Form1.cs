@@ -9,6 +9,7 @@ namespace UFO_50_Save_Editor
 {
     public partial class Form1 : Form
     {
+        public string saveFilePath = "";
         public Form1()
         {
             InitializeComponent();
@@ -30,7 +31,7 @@ namespace UFO_50_Save_Editor
             VariableCol.Name = "VariableCol";
             ValueCol.Name = "ValueCol";
 
-            string saveFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ufo50", "save1.ufo");
+            saveFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ufo50", "save1.ufo");
             if (!File.Exists(saveFilePath)) {
                 OpenSaveFileDialog();
             }
@@ -58,7 +59,6 @@ namespace UFO_50_Save_Editor
                 "Confirm Overwrite", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
 
             if (dialogResult == DialogResult.Yes) {
-                string saveFilePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ufo50", "save1.ufo");
                 CreateBackup(saveFilePath);
 
                 var variables = new Dictionary<string, object>();
@@ -170,8 +170,8 @@ namespace UFO_50_Save_Editor
                 openFileDialog.Title = "Select a UFO Save File";
 
                 if (openFileDialog.ShowDialog() == DialogResult.OK) {
-                    string filePath = openFileDialog.FileName;
-                    ReadSaveFile(filePath);
+                    saveFilePath = openFileDialog.FileName;
+                    ReadSaveFile(saveFilePath);
                 }
             }
         }
